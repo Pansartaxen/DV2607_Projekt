@@ -9,7 +9,6 @@ def download_files(file_dict):
         else:
             print(f"File {file_path} already exists.")
 
-# Example usage
 file_dict = {
     '../Models/cnn.h5': 'https://drive.google.com/uc?id=1ZgWZgfcM-cKs4-WOVENZDR1PtECj5z7A',
 }
