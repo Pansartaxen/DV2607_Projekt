@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
-main_dir = 'Images'
+main_dir = '../Images'
 num_classes = 11
 
 train_datagen = ImageDataGenerator(
@@ -15,7 +15,7 @@ train_datagen = ImageDataGenerator(
 
 train_generator = train_datagen.flow_from_directory(
     main_dir,
-    target_size=(64, 64),  # set your target size
+    target_size=(128, 128),  # set your target size
     batch_size=32,         # set your batch size
     class_mode='categorical',  # use 'categorical' for multi-class classification
     subset='training'  # specify that this is the training set
@@ -23,7 +23,7 @@ train_generator = train_datagen.flow_from_directory(
 
 validation_generator = train_datagen.flow_from_directory(
     main_dir,
-    target_size=(64, 64),  # set your target size
+    target_size=(128, 128),  # set your target size
     batch_size=32,         # set your batch size
     class_mode='categorical',  # use 'categorical' for multi-class classification
     subset='validation',  # specify that this is the validation set
@@ -31,7 +31,7 @@ validation_generator = train_datagen.flow_from_directory(
 
 # Build the CNN model
 model = tf.keras.models.Sequential()
-model.add(tf.keras.layers.Conv2D(32, (3, 3), input_shape=(64, 64, 3), activation='relu'))
+model.add(tf.keras.layers.Conv2D(32, (3, 3), input_shape=(128, 128, 3), activation='relu'))
 model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
 model.add(tf.keras.layers.Flatten())
 model.add(tf.keras.layers.Dense(units=128, activation='relu'))
