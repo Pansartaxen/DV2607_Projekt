@@ -1,8 +1,8 @@
 import cv2
 import os
 
-input_dir = "RSI-CB256/old_storeroom"
-output_dir = "RSI-CB256/storeroom"
+input_dir = "UCMerced_LandUse/Images/old_storagetanks"
+output_dir = "UCMerced_LandUse/Images/storagetanks"
 desired_width = 128
 desired_height = 128
 
