@@ -30,7 +30,7 @@ def load_and_preprocess_image(img_path, target_size=(128, 128)):
 model = load_model('model.h5')
 
 # Directory where the attacked images are stored
-attacked_images_dir = '../Images/fgsm/airport'
+attacked_images_dir = '../Images/fgsm_0.1/airport'
 
 correct = 0
 incorrect = 0
