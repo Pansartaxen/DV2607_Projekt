@@ -70,7 +70,12 @@ def fgsm_attack(input_folder, output_folder, epsilon):
         adversarial_img_squeezed = np.squeeze(adversarial_img.numpy(), axis=0)
         tf.keras.preprocessing.image.save_img(save_path, adversarial_img_squeezed)
 
-for folder in PATHS:
-    print(f"Creating attacks for: {folder}")
-    fgsm_attack(input_folder=folder, output_folder=f'../Images/fgsm_0.01/airport',
-            epsilon=0.01)
+def run_fgsm(epsilon):
+    for folder in PATHS:
+        print(f"Creating attacks for: {folder}")
+        output_folder = folder.replace("clean", f"fgsm_{epsilon}")
+        fgsm_attack(input_folder=folder, output_folder=output_folder,
+                epsilon=epsilon)
+
+if __name__ == "__main__":
+    run_fgsm(0.05)
