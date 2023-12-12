@@ -5,19 +5,20 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.inception_v3 import preprocess_input
 
-PATHS = {
-    "airport": "../Images/airport",
-    "avenue": "../Images/avenue",
-    "bridge": "../Images/bridge",
-    "building": "../Images/building",
-    "denseresidential": "../Images/denseresidential",
-    "highway": "../Images/highway",
-    "marina": "../Images/marina",
-    "mediumresidential": "../Images/mediumresidential",
-    "parkinglot": "../Images/parkinglot",
-    "residents": "../Images/residents",
-    "storeroom": "../Images/storeroom",
-}
+PATHS = [
+    "../Images/clean/airport",
+    "../Images/clean/avenue",
+    "../Images/clean/bridge",
+    "../Images/clean/building",
+    "../Images/clean/denseresidential",
+    "../Images/clean/highway",
+    "../Images/clean/marina",
+    "../Images/clean/mediumresidential",
+    "../Images/clean/parkinglot",
+    "../Images/clean/residents",
+    "../Images/clean/storeroom"
+]
+
 
 def load_image(img_path, size=(128, 128)):
     img = image.load_img(img_path, target_size=size)
@@ -28,7 +29,7 @@ def load_image(img_path, size=(128, 128)):
 
 def fgsm_attack(input_folder, output_folder, epsilon):
     # Load the pre-trained model
-    model = load_model('model.h5')
+    model = load_model('../Models/cnn.h5')
     num_classes = 11
     # Ensure output folder exists
     if not os.path.exists(output_folder):
@@ -42,7 +43,7 @@ def fgsm_attack(input_folder, output_folder, epsilon):
         img_tensor = tf.convert_to_tensor(img_array, dtype=tf.float32)
 
         # Get the input label of the image
-        preds = model.predict(img_tensor)
+        preds = model.predict(img_tensor, verbose=0)
         label_index = np.argmax(preds[0])
         label = tf.one_hot(label_index, num_classes)
 
@@ -69,14 +70,7 @@ def fgsm_attack(input_folder, output_folder, epsilon):
         adversarial_img_squeezed = np.squeeze(adversarial_img.numpy(), axis=0)
         tf.keras.preprocessing.image.save_img(save_path, adversarial_img_squeezed)
 
-# Example usage
-
-#for folders in PATHS:
-#    fgsm_attack(input_folder='../Images/airport', output_folder=f'../Images/fgsm/{folders}', model_path='../Models/cnn.h5',
-#                epsilon=0.01)
-
-fgsm_attack(input_folder='../Images/airport', output_folder=f'../Images/fgsm/airport',
-            epsilon=0.1)
-
-#fgsm_attack(input_folder='../Images/airport', output_folder=f'../Images/fgsm/airport', model_path='../Models/cnn.h5',
-#            epsilon=0.01)
+for folder in PATHS:
+    print(f"Creating attacks for: {folder}")
+    fgsm_attack(input_folder=folder, output_folder=f'../Images/fgsm_0.01/airport',
+            epsilon=0.01)
