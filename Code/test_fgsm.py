@@ -27,10 +27,10 @@ def load_and_preprocess_image(img_path, target_size=(128, 128)):
 
 
 # Load the trained model
-model = load_model('model.h5')
+model = load_model('../Models/cnn_V.h5')
 
 # Directory where the attacked images are stored
-attacked_images_dir = '../Images/fgsm_0.1/airport'
+attacked_images_dir = '../Images/fgsm_0.01/airport'
 
 correct = 0
 incorrect = 0
@@ -45,7 +45,7 @@ for img_name in os.listdir(attacked_images_dir):
     img_tensor = load_and_preprocess_image(img_path)
 
     # Predict the class of the image
-    predictions = model.predict(img_tensor)
+    predictions = model.predict(img_tensor, verbose=0)
 
     # Decode the predictions
     predicted_class = np.argmax(predictions[0])
