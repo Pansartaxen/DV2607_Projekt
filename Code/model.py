@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
-main_dir = '../Images'
+main_dir = 'Images/clean'
 num_classes = 11
 
 train_datagen = ImageDataGenerator(
@@ -21,7 +21,9 @@ train_generator = train_datagen.flow_from_directory(
     subset='training'  # specify that this is the training set
 )
 
-validation_generator = train_datagen.flow_from_directory(
+validation_datagen = ImageDataGenerator(rescale=1./255)
+
+validation_generator = validation_datagen.flow_from_directory(
     main_dir,
     target_size=(128, 128),  # set your target size
     batch_size=32,         # set your batch size
@@ -41,4 +43,4 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 
 model.fit(train_generator, epochs=10)
 
-model.save("model.h5")
+model.save('Models/cnn.h5')

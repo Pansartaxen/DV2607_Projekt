@@ -10,7 +10,7 @@ def download_files(file_dict):
             print(f"File {file_path} already exists.")
 
 file_dict = {
-    '../Models/cnn.h5': 'https://drive.google.com/uc?id=1ZgWZgfcM-cKs4-WOVENZDR1PtECj5z7A',
+    'Models/cnn.h5': 'https://drive.google.com/uc?id=1ZgWZgfcM-cKs4-WOVENZDR1PtECj5z7A',
 }
 
 download_files(file_dict)
