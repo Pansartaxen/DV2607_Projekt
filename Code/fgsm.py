@@ -29,7 +29,7 @@ def load_image(img_path, size=(128, 128)):
 
 def fgsm_attack(input_folder, output_folder, epsilon):
     # Load the pre-trained model
-    model = load_model('../Models/cnn.h5')
+    model = load_model('../Models/cnn_V.h5')
     num_classes = 11
     # Ensure output folder exists
     if not os.path.exists(output_folder):
@@ -78,4 +78,4 @@ def run_fgsm(epsilon):
                 epsilon=epsilon)
 
 if __name__ == "__main__":
-    run_fgsm(0.05)
+    run_fgsm(0.1)
