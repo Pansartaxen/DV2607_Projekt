@@ -1,73 +1,89 @@
 import os
 import numpy as np
-import tensorflow as tf
+import pandas as pd
 from pathlib import Path
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.models import load_model, Model
 
-# Load the saved HSRRS image classifier model with the custom InputLayer
-hsrrs_model = load_model('Models/cnn.h5')
+class ExctactLayers:
+    '''
+    When iniyilizing the class provide
+    the path for the model to extract
+    features from
+    '''
+    def __init__(self, Path) -> None:
+        self.model = load_model(Path)
+        self.labels = []
+        self.features = []
 
-hsrrs_model.summary()
+    def extract(self) -> list:
+        '''
+        Input: None
+        Output: Two lists,
+            1. Features
+            2. Labels
+        '''
+        input_layer = self.model.get_layer('conv2d').input
+        output_layer = self.model.get_layer('conv2d_1').output
 
-input_layer = hsrrs_model.get_layer('conv2d').input
-output_layer = hsrrs_model.get_layer('conv2d_1').output
+        feature_extractor_model = Model(inputs=input_layer, outputs=output_layer)
 
-feature_extractor_model = Model(inputs=input_layer, outputs=output_layer)
+        parent_dir = 'Images'
+        subdirectories = os.listdir(parent_dir)
 
-parent_dir = "Images"
-subdirectories = os.listdir(parent_dir)
 
-class_features = {}
-
-for subdirectory in subdirectories:
-    if subdirectory == '.DS_Store':
-        continue
-
-    attacked_img = (subdirectory != 'clean')
-    class_dir = Path(parent_dir, subdirectory)
-
-    if class_dir.is_file():
-        continue
-
-    features_list = []
-
-    for attack_level in class_dir.iterdir():
-        if attack_level.name == '.DS_Store':
-            continue
-
-        #sub_class = Path(class_dir, attack_level)
-        sub_class = Path(attack_level)
-
-        if sub_class.is_file():
-            continue
-        print('Sub_class:', sub_class)
-        for filename in sub_class.iterdir():
-            if filename.name == '.DS_Store':
+        for subdirectory in subdirectories:
+            if subdirectory == '.DS_Store':
                 continue
 
-            img_path = filename
+            attacked_img = (subdirectory != 'clean')
+            class_dir = Path(parent_dir, subdirectory)
 
-            img = load_img(
-                img_path, grayscale=False, color_mode='rgb', target_size=None,
-                interpolation='nearest')
+            if class_dir.is_file():
+                continue
 
-            img_array = img_to_array(img)
-            img_array = np.expand_dims(img_array, 0)
+            for attack_level in class_dir.iterdir():
+                if attack_level.name == '.DS_Store':
+                    continue
 
-            # Extract features from the adversarial examples
-            feature = feature_extractor_model.predict(img_array)
+                sub_class = Path(attack_level)
 
-            # Concatenate the features from the two layers
-            features = tf.concat([feature], axis=-1)
+                if sub_class.is_file():
+                    continue
 
-            features = feature_extractor_model.predict(img_array)
+                for filename in sub_class.iterdir():
+                    # Fail safe for Mac
+                    if filename.name == '.DS_Store':
+                        continue
 
-            features_list.append(features)
+                    img_path = filename
 
-        class_features[subdirectory] = (attacked_img, np.array(features_list))
+                    img = load_img(
+                        img_path,
+                        grayscale=False,
+                        color_mode='rgb',
+                        target_size=None,
+                        interpolation='nearest'
+                    )
 
-# Example of using the extracted features
-for class_name, (attacked, features) in class_features.items():
-    print(f'Class: {class_name}, Attacked: {attacked}')
-    print('Features Shape:', features.shape)
+                    img_array = img_to_array(img)
+                    img_array = np.expand_dims(img_array, 0)
+
+                    # Extract self.features from the adversarial and clean examples
+                    feature = feature_extractor_model.predict(img_array)
+
+                    flattened_feature = np.array(feature).flatten()
+
+                    self.labels.append(attacked_img)
+                    self.features.append(flattened_feature)
+                    # Concatenate the self.features from the layers
+
+                    #df_subdirectory = pd.concat([df_subdirectory, pd.DataFrame({'label': [attacked_img], 'self.features': [flattened_feature.tolist()]})], ignore_index=True)
+                print(f'X*X*X*X*X*X*X*X*X*X {attack_level} done X*X*X*X*X*X*X*X*X*X')
+        return self.features, self.labels
+
+    def save_to_csv(self, path='Models/features.csv') -> None:
+        data = pd.DataFrame({'label': self.labels, 'features': self.features})
+
+        csv_filename = path
+        data.astype({'label': int, 'features': str}).to_csv(csv_filename, index=False)

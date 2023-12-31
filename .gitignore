@@ -6,3 +6,4 @@ Images/.DS_Store
 .DS_Store
 Code/test.py
 test.py
+*.joblib

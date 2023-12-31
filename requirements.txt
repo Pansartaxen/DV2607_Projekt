@@ -3,3 +3,7 @@ numpy
 Pillow
 opencv-python
 gdown
+json
+joblib
+pathlib
+tqdm
