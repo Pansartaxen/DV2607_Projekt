@@ -54,4 +54,4 @@ model.fit(train_generator, epochs=10, validation_data=validation_generator)
 model.summary()
 
 # Save the entire model to a file
-model.save('Models/cnn_2.h5')
+model.save('Models/cnn_V2.h5')
