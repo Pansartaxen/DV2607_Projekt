@@ -11,7 +11,8 @@ def download_files(file_dict):
 
 file_dict = {
     'cnn.h5': 'https://drive.google.com/uc?id=1ZgWZgfcM-cKs4-WOVENZDR1PtECj5z7A',
-    'cnn_V2.h5': 'https://drive.google.com/uc?id=1IjY7UtTB_EoW4vM4QPObnxRWyC2_VV0-'
+    'cnn_V2.h5': 'https://drive.google.com/uc?id=1IjY7UtTB_EoW4vM4QPObnxRWyC2_VV0-',
+    'svm.joblib': 'https://drive.google.com/uc?id=1k93jz8ZzlKUkcV4j1R0C15IIPD9xsfbM'
 }
 
 
