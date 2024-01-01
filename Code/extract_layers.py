@@ -11,7 +11,7 @@ class ExctactLayers:
     the path for the model to extract
     features from
     '''
-    def __init__(self, Path) -> None:
+    def __init__(self, Path:str) -> None:
         self.model = load_model(Path)
         self.labels = []
         self.features = []
@@ -87,3 +87,25 @@ class ExctactLayers:
 
         csv_filename = path
         data.astype({'label': int, 'features': str}).to_csv(csv_filename, index=False)
+        print(f'Data has been saved to {path}')
+
+    def read_from_csv(self, path='Models/features.csv') -> tuple:
+        '''
+        Input: Path to csv file
+        Output: Two lists,
+            1. Features
+            2. Labels
+        '''
+        data = pd.read_csv(path)
+
+        features = np.array(data['features'])
+        labels = np.array(data['label'])
+
+        return features, labels
+
+
+if __name__ == '__main__':
+    extract_layers = ExctactLayers('Models/cnn_V2.h5')
+    extract_layers.extract()
+    print('Extraction done')
+    extract_layers.save_to_csv()

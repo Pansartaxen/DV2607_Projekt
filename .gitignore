@@ -7,3 +7,4 @@ Images/.DS_Store
 Code/test.py
 test.py
 *.joblib
+Models/features.csv
