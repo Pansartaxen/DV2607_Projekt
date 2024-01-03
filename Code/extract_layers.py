@@ -23,10 +23,10 @@ class ExctactLayers:
             1. Features
             2. Labels
         '''
-        input_layer = self.model.get_layer('conv2d').input
-        output_layer = self.model.get_layer('conv2d_1').output
+        # input_layer = self.model.get_layer('conv2d').input
+        # output_layer = self.model.get_layer('conv2d_1').output
 
-        feature_extractor_model = Model(inputs=input_layer, outputs=output_layer)
+        feature_extractor_model = Model(inputs=self.model.input, outputs=self.model.layers[8].output)
 
         parent_dir = 'Images'
         subdirectories = os.listdir(parent_dir)
