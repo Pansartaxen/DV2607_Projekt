@@ -68,7 +68,7 @@ class ExctactLayers:
                     img_array = img_to_array(img)
                     img_array = np.expand_dims(img_array, 0)
 
-                    feature = feature_extractor_model.predict(img_array)
+                    feature = feature_extractor_model.predict(img_array, verbose=0)
 
                     flattened_feature = np.array(feature).flatten()
 
