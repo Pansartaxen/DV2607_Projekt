@@ -1,13 +1,12 @@
 import joblib
 import numpy as np
-from tqdm import tqdm
 from sklearn.svm import SVC
 from sklearn.utils import shuffle
-from extract_layers import ExctactLayers
+from extract_layers import ExctractLayers
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
-feature_extractor = ExctactLayers('Models/cnn_V2.h5')
+feature_extractor = ExctractLayers('Models/cnn_V2.h5')
 
 features, labels = feature_extractor.extract()
 
@@ -15,32 +14,20 @@ print('X*X*X*X*X*X*X*X*X*X Training Model X*X*X*X*X*X*X*X*X*X')
 X = np.array(features)
 y = np.array(labels)
 
-X, y = shuffle(X, y, random_state=42)
+print('Feature vector shape: ', X.shape)
+print('Label vector shape ', y.shape)
 
-print(f'Shapes of the arrays: X={X.shape}, y={y.shape}')
-print(len(X[0]))
+X, y = shuffle(X, y, random_state=42)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 print('Done splitting the data')
 
-svm_model = SVC(kernel='linear', C=1.0)
+svm_model = SVC(kernel='linear', C=0.5)
 
 print('Fiting the model')
 
 svm_model.fit(X_train, y_train)
-# batch_size = 1433
-# svm_model = SVC(kernel='linear', C=1.0)
-# for i in tqdm(range(int(len(y_train)/batch_size))):
-#     start_idx = i * batch_size
-#     end_idx = (i + 1) * batch_size
-#     X_batch = X_train[start_idx:end_idx]
-#     y_batch = y_train[start_idx:end_idx]
-
-#     print(X_batch)
-
-#     svm_model.fit(X_batch, y_batch)
-
 
 print('Training done, testing model')
 

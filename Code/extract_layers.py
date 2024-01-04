@@ -5,7 +5,7 @@ from pathlib import Path
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.models import load_model, Model
 
-class ExctactLayers:
+class ExctractLayers:
     '''
     When iniyilizing the class provide
     the path for the model to extract
@@ -23,6 +23,8 @@ class ExctactLayers:
             1. Features
             2. Labels
         '''
+        # input_layer = self.model.get_layer('conv2d').input
+        # output_layer = self.model.get_layer('conv2d_1').output
 
         input_layer = self.model.get_layer('conv2d').input
         output_layer = self.model.get_layer('dense').output
