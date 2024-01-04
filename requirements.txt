@@ -8,3 +8,4 @@ joblib
 pathlib
 tqdm
 scikit-learn
+pandas
