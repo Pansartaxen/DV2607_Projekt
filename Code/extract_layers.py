@@ -16,21 +16,20 @@ class ExctactLayers:
         self.labels = []
         self.features = []
 
-    def extract(self) -> list:
+    def extract(self) -> tuple:
         '''
         Input: None
         Output: Two lists,
             1. Features
             2. Labels
         '''
-        # input_layer = self.model.get_layer('conv2d').input
-        # output_layer = self.model.get_layer('conv2d_1').output
 
-        feature_extractor_model = Model(inputs=self.model.input, outputs=self.model.layers[8].output)
+        input_layer = self.model.get_layer('conv2d').input
+        output_layer = self.model.get_layer('dense').output
+        feature_extractor_model = Model(inputs=input_layer, outputs=output_layer)
 
         parent_dir = 'Images'
         subdirectories = os.listdir(parent_dir)
-
 
         for subdirectory in subdirectories:
             if subdirectory == '.DS_Store':
@@ -69,20 +68,21 @@ class ExctactLayers:
                     img_array = img_to_array(img)
                     img_array = np.expand_dims(img_array, 0)
 
-                    # Extract self.features from the adversarial and clean examples
                     feature = feature_extractor_model.predict(img_array)
 
                     flattened_feature = np.array(feature).flatten()
 
                     self.labels.append(attacked_img)
                     self.features.append(flattened_feature)
-                    # Concatenate the self.features from the layers
 
-                    #df_subdirectory = pd.concat([df_subdirectory, pd.DataFrame({'label': [attacked_img], 'self.features': [flattened_feature.tolist()]})], ignore_index=True)
                 print(f'X*X*X*X*X*X*X*X*X*X {attack_level} done X*X*X*X*X*X*X*X*X*X')
         return self.features, self.labels
 
     def save_to_csv(self, path='Models/features.csv') -> None:
+        '''
+        Input: Path to csv file
+        Output: None
+        '''
         data = pd.DataFrame({'label': self.labels, 'features': self.features})
 
         csv_filename = path
@@ -102,7 +102,6 @@ class ExctactLayers:
         labels = np.array(data['label'])
 
         return features, labels
-
 
 if __name__ == '__main__':
     extract_layers = ExctactLayers('Models/cnn_V2.h5')

@@ -1,5 +1,6 @@
 import joblib
 import numpy as np
+from tqdm import tqdm
 from sklearn.svm import SVC
 from sklearn.utils import shuffle
 from extract_layers import ExctactLayers
@@ -16,13 +17,30 @@ y = np.array(labels)
 
 X, y = shuffle(X, y, random_state=42)
 
+print(f'Shapes of the arrays: X={X.shape}, y={y.shape}')
+print(len(X[0]))
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 print('Done splitting the data')
 
 svm_model = SVC(kernel='linear', C=1.0)
 
+print('Fiting the model')
+
 svm_model.fit(X_train, y_train)
+# batch_size = 1433
+# svm_model = SVC(kernel='linear', C=1.0)
+# for i in tqdm(range(int(len(y_train)/batch_size))):
+#     start_idx = i * batch_size
+#     end_idx = (i + 1) * batch_size
+#     X_batch = X_train[start_idx:end_idx]
+#     y_batch = y_train[start_idx:end_idx]
+
+#     print(X_batch)
+
+#     svm_model.fit(X_batch, y_batch)
+
 
 print('Training done, testing model')
 
