@@ -1,0 +1,20 @@
+Confusion Matrix:
+[[  23 1091]
+ [  41 3297]]
+
+False Positive (FP): 1091
+False Negative (FN): 41
+True Positive (TP): 3297
+True Negative (TN): 23
+
+Accuracy: 0.7457322551662174
+
+Classification Report:
+              precision    recall  f1-score   support
+
+       False       0.36      0.02      0.04      1114
+        True       0.75      0.99      0.85      3338
+
+    accuracy                           0.75      4452
+   macro avg       0.56      0.50      0.45      4452
+weighted avg       0.65      0.75      0.65      4452

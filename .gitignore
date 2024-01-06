@@ -8,3 +8,4 @@ Code/test.py
 test.py
 *.joblib
 Models/features.csv
+Images/.DS_Store

@@ -2,11 +2,15 @@ import joblib
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.utils import shuffle
-from extract_layers import ExctactLayers
+from extract_layers import ExctractLayers
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
+import platform
 
-feature_extractor = ExctactLayers('../Models/cnn_V2.h5')
+if platform.system() == 'Windows':
+   feature_extractor = ExctractLayers('../Models/cnn_V2.h5')
+else:
+    feature_extractor = ExctractLayers('Models/cnn_V2.h5')
 
 features, labels = feature_extractor.extract()
 
@@ -31,5 +35,9 @@ y_pred = decision_tree_model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print(f"Accuracy: {accuracy * 100:.2f}%")
 
-model_filename = '../Models/decision_tree.joblib'
-joblib.dump(decision_tree_model, model_filename)
+if platform.system() == 'Windows':
+    model_filename = '../Models/decision_tree.joblib'
+else:
+    model_filename = 'Models/decision_tree.joblib'
+
+joblib.dump(decision_tree_model, model_filename, protocol=4)
