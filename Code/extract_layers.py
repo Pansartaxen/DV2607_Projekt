@@ -4,6 +4,7 @@ import pandas as pd
 from pathlib import Path
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.models import load_model, Model
+import platform
 
 class ExctractLayers:
     '''
@@ -30,7 +31,11 @@ class ExctractLayers:
         output_layer = self.model.get_layer('dense').output
         feature_extractor_model = Model(inputs=input_layer, outputs=output_layer)
 
-        parent_dir = 'Images'
+        if platform.system() == 'Windows':
+            parent_dir = '../Images'
+        else:
+            parent_dir = 'Images'
+
         subdirectories = os.listdir(parent_dir)
 
         for subdirectory in subdirectories:
